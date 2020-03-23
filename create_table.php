@@ -116,7 +116,15 @@
             case 4:
                 return "HARD-CLEAR";
             case 5:
+            case 10:
+            case 9:
                 return "FULL-COMBO";
+            case 8:
+                return "EX-HARD";
+            case 7:
+            case 6:
+                return "ASSIST-EASY";
+            case 5:
             default:
                 return "?";
         }

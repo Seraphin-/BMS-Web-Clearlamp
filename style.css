@@ -60,7 +60,7 @@ span.not-show {
 	font-size: 1.3em;
 }
 .chartdiv {
-	margin-top: 150px;
+	margin-top: 175px;
 	width: 100%;
 	height: 800px;
 	margin-bottom: 0px;
@@ -200,7 +200,7 @@ button[title]{
 	width: calc(100% - 155px);
 	position: absolute;
 	left: 150px;
-	top: 0;
+	top: 1000px;
 	display: block;
 	float: left;
 	min-width: 800px;
@@ -379,7 +379,17 @@ td.FULL-COMBO {
 td.td-title a{
 	color: white;
 	text-decoration: none;
-} 
+}
+
+td.td-title-ASSIST-EASY {
+	background: #ff00ff;
+}
+
+td.td-title-EX-HARD { /* default */
+	background: -moz-linear-gradient(top, #dceabb 0%, #dccd4d 50%, #d8b500 51%, #dbdf93 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #dceabb 0%,#dccd4d 50%,#d8b500 51%,#dbdf93 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #dceabb 0%,#dccd4d 50%,#d8b500 51%,#dbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
 
 td.td-title-FAILED {
 	background: #606060; /* Old browsers */

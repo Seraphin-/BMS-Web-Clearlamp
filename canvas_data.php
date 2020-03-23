@@ -1,5 +1,14 @@
 <?php
-//songdata 분류
+
+interface ScoreDriver {
+    public function __construct($parameter);
+    public function get_playername();
+    public function fetch_score(&$song);
+    public function get_playerstring($playername);
+}
+
+require_once 'lr2ir_driver.php';
+require_once 'beatoraja_driver.php';
 
 function add_song($song, $mode, $level, $i)
 {
@@ -16,6 +25,7 @@ function add_song($song, $mode, $level, $i)
 			}
 		}
 	} else {
+        if(!isset($song->notes)) return false;
 		if(strcmp($song->{"level"}, $level) === 0)
 		{
 			switch($i) {
@@ -76,6 +86,21 @@ function get_currentclear($mode, $i, &$indexlabelcolor)
 {
 	if($mode === "clear") {
 		switch ($i) {
+            case 10:
+                $currentclear = "MAX";
+                break;
+            case 9:
+                $currentclear = "PERFECT";
+                break;
+            case 8:
+                $currentclear = "EX-HARD";
+                break;
+            case 7:
+                $currentclear = "LIGHT ASSIST EASY";
+                break;
+            case 6:
+                $currentclear = "ASSIST EASY";
+                break;
 			case 5:
 				$currentclear = "FC";
 				$indexlabelcolor = "#171717";
@@ -136,132 +161,70 @@ function get_time() {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
-function read_url($url)
-{
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_URL, $url);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	return $data;
-}
+$start = get_time();
 
-function randomcolor()
-{
-	$red = intval((mt_rand(0,256)+160)/2);
-	$green = intval((mt_rand(0,256)+160)/2);
-	$blue = intval((mt_rand(0,256)+160)/2);
-	return "rgb(".$red.",".$green.",".$blue.")";
-}
-
-//LR2 cgi
-function get_lr2_cgi($lr2ID) 
-{
-	return read_url("http://www.dream-pro.info/~lavalse/LR2IR/2/getplayerxml.cgi?id=".$lr2ID);
-}
-function get_playername($lr2_cgi)
-{
-	return mb_convert_encoding(substr($lr2_cgi, strpos($lr2_cgi, "<rivalname>")+11, strlen($lr2_cgi)-strpos($lr2_cgi, "<rivalname>")- 24), "UTF-8", "SJIS");
-}
-
-$table_url = $_GET["table_url"];
-$html = read_url($table_url);
-$lr2ID = $_GET["lr2ID"];
-$mode = $_GET["mode"];
+$table_url = preg_replace( "/[^a-z_]/", "", isset($_GET["table_url"]) ? $_GET["table_url"] : "");
+$tablename = "(No table loaded)";
+$lr2ID = isset($_GET["lr2ID"]) ? $_GET["lr2ID"] : "";
+$mode = isset($_GET["mode"]) ? $_GET["mode"] : "";
+$beatoraja_db  = preg_replace( "/[^a-f0-9_]/", "", isset($_GET["beatoraja_db"]) ? $_GET["beatoraja_db"] : "");;
+$playerstring = "";
 if(empty($_GET["mode"]))
 {
 	$mode = 'clear';
 }
 
-if(empty($lr2ID)===FALSE &&  $html !== FALSE)
-{
-    $start = get_time();
-	
-	$lr2_cgi = get_lr2_cgi($lr2ID);
-	
-	//playername, score들 get
-	$playername = get_playername($lr2_cgi);
-	$scorexml = simplexml_load_string(substr($lr2_cgi, 1, strpos($lr2_cgi, rivalname)-2));
-	
-	if($scorexml === false) {
-		exit("Unable to get score. <br><a href=\"javascript:history.go(-1)\">GO BACK</a>");
-	}
-	
-	//table URL에서 html파싱 후  header.json url get
-	$dom = new DOMDocument();
-	@$dom->loadHTML($html);
-	$header_url;
-	foreach($dom->getElementsByTagName('meta') as $link) 
-	{
-        if(strpos($link->getAttribute('content'), "json")!== FALSE)
-		{
-			$header_url = $link->getAttribute('content');
-			if(strpos($header_url, "http") === FALSE)
-				$header_url = substr($table_url, 0, strrpos($table_url, "/")+1).$header_url;
-		}
-	}
-	
-	
-	
-	//header.json
-	$headerjson = json_decode(trim(trim(read_url($header_url), "\x00..\x1F"), "\x80..\xFF"));
-	if(json_last_error() === JSON_ERROR_NONE)
-	{
-		$tablename = $headerjson->{"name"};
-		$tablesymbol = $headerjson->{"symbol"};
-		$data_url = $headerjson->{"data_url"};
-	}
-	
-	//songdata.json
-	if(strpos($data_url, "http") === FALSE)
-		$data_url = substr($header_url, 0, strrpos($header_url, "/")+1).trim($data_url, "./");
-	$songdata = json_decode($datastring = read_url($data_url));
-	
-	if(json_last_error() !== JSON_ERROR_NONE)
-	{
-		$datastring = trim(trim($datastring, "\x00..\x1F"), "\x80..\xFF");
-		$songdata = json_decode( $datastring );
-	}
-	
-    if(count($songdata)===0)
-    {
-    	exit("Unable to open Table <br><a href=\"javascript:history.go(-1)\">GO BACK</a>");
+$loaded_table = false;
+
+if(empty($lr2ID)===FALSE && empty($beatoraja_db)===FALSE) exit("Please only specify either LR2 ID or Beatoraja DB Hash <br><a href=\"javascript:history.go(-1)\">GO BACK</a>");
+if((empty($lr2ID)===FALSE || empty($beatoraja_db)===FALSE) && empty($table_url)===FALSE) {
+    if(!file_exists('tables/'.$table_url.'.json')) exit("Unable to open Table <br><a href=\"javascript:history.go(-1)\">GO BACK</a>");
+    /** @var ScoreDriver $driver */
+    if(empty($lr2ID)==FALSE) $driver = new LR2IRDriver($lr2ID);
+	else {
+	    if(!file_exists('dbs/'.$beatoraja_db)) exit("Unable to open DB <br><a href=\"javascript:history.go(-1)\">GO BACK</a>");;
+	    $driver = new BeatorajaDriver($beatoraja_db);
     }
+
+	$player_name = $driver->get_playername();
+	$playerstring = $driver->get_playerstring($player_name);
+
+	// We are just going to read the json from disk, since normal tables don't include the sha256 anyway.
+    // We can't support custom table URLs this way but it's fine.
+	$json = json_decode($datastring = file_get_contents('tables/'.$table_url.'.json'));
+    $tablename = $json->name;
+    $tablesymbol = $json->symbol;
+    $songdata = $json->songdata;
     
 	//Level의 목록을 get하고 clear항목을 cgi와 대조해 추가
 	$levelarr = array();
-	$all_level_count = array(0,0,0,0,0,0);
-	foreach($songdata as $song)
-	{
-		foreach($scorexml->score as $score)
-		{
-			if(strcasecmp($score->hash, $song->{"md5"})===0)
-			{
-				$song->{"clear"} = $score->clear;
-				$all_level_count[(int)$song->clear]++;
-				$song->{"score"} = ((int)($score->pg))*2 + ((int)($score->gr));
-				$song->{"notes"} = (int)($score->notes);
-				$song->{"minbp"} = (int)($score->minbp);
-			}
-		}
-		if(!in_array($song->{"level"}, $levelarr))
-			$levelarr[] = $song->{"level"};
-	}
-	natsort($levelarr);
-	$levelarr=array_reverse($levelarr);
-	
-	
+	$all_level_count = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    foreach($songdata as $song)
+    {
+        $score = $driver->fetch_score($song);
+        if($score) {
+            $song->{"clear"} = $score->clear;
+            $all_level_count[(int)$score->clear]++;
+            $song->{"score"} = $score->score;
+            $song->{"notes"} = (int)($score->notes);
+            $song->{"minbp"} = (int)($score->minbp);
+        }
+        if(!in_array($song->{"level"}, $levelarr))
+            $levelarr[] = $song->{"level"};
+    }
+//	natsort($levelarr);
+	$levelarr = array_reverse($levelarr);
+
 	$level_int_arr = array_filter($levelarr, "is_numeric");
-    $cleartime = get_time();
     
 	//canvajs용 데이터 만들기
-	$datafullstring;
-	if($mode === "clear")
-		$numberofLegend = 5;
-	else
-		$numberofLegend = 6;
+	$datafullstring = "";
 
-	for($i = $numberofLegend; $i>=0; $i--)
+	if($mode === "clear")
+        if(empty($beatoraja_db)==FALSE) $clear_order = [10,9,5,8,4,3,2,7,6,1,0];
+        else $clear_order = [5,4,3,2,1,0];
+    else $clear_order = [6,5,4,3,2,1,0];
+	foreach($clear_order as $i)
 	{
 		$indexlabelcolor = "white";
 		$currentclear = get_currentclear($mode, $i, $indexlabelcolor);
@@ -356,7 +319,7 @@ if(empty($lr2ID)===FALSE &&  $html !== FALSE)
 	$datafullstring = "
     {
     	title: {
-    		text: \"".$tablename." ".strtoupper($mode)." LAMP (Player: ".$playername.")\",
+    		text: \"".$tablename." ".strtoupper($mode)." LAMP (Player: ".$player_name.")\",
     		horizontalAlign: 'left',
     		fontSize: 25,
     		fontFamily: \"arial\",
@@ -385,6 +348,7 @@ if(empty($lr2ID)===FALSE &&  $html !== FALSE)
     		labelFontColor: \"white\",
     	},
     	data:[".substr($datafullstring, 0, strlen($datafullstring)-1)."]}";
+	$loaded_table = true;
 }
 
 ?>
