@@ -1,5 +1,4 @@
 <?php
-
 interface ScoreDriver {
     public function __construct($parameter);
     public function get_playername();
@@ -163,7 +162,7 @@ function get_time() {
 }
 $start = get_time();
 
-$table_url = preg_replace( "/[^a-z_]/", "", isset($_GET["table_url"]) ? $_GET["table_url"] : "");
+$table_url = preg_replace( "/[^a-z0-9_]/", "", isset($_GET["table_url"]) ? $_GET["table_url"] : "");
 $tablename = "(No table loaded)";
 $lr2ID = isset($_GET["lr2ID"]) ? $_GET["lr2ID"] : "";
 $mode = isset($_GET["mode"]) ? $_GET["mode"] : "";
@@ -206,7 +205,7 @@ if((empty($lr2ID)===FALSE || empty($beatoraja_db)===FALSE) && empty($table_url)=
             $song->{"clear"} = $score->clear;
             $all_level_count[(int)$score->clear]++;
             $song->{"score"} = $score->score;
-            $song->{"notNes"} = (int)($score->notes);
+            $song->{"notes"} = (int)($score->notes);
             $song->{"minbp"} = (int)($score->minbp);
         }
         if(!in_array($song->{"level"}, $levelarr))

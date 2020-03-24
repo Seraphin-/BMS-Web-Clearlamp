@@ -84,7 +84,7 @@
 						<label for="urlselect">	URL:</label>
 						<select id="table_url" name="table_url" class="urlselect" onchange="this.form.submit()">
                             <?php
-                            $tables = ['' => 'Select Table', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ'];
+                            $tables = ['' => 'Select Table', 'kuse1' => '癖譜面コレクション(仮)', 'kuse2' => '癖譜面コレクション(サブ)', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ', 'Stella' => 'stella', 'Satellite' => 'satellite'];
                             foreach($tables as $val => $name) {
                                 ?>
                                 <option value="<?= $val ?>" <?= ($table_url == $val) ? 'selected="yes"' : '' ?>><?= $name ?></option>

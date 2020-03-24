@@ -184,21 +184,24 @@
         ';
         foreach($songdata as $song)
         {
-            $clear_counter[(int)$song->{"clear"}]++;
-            $rank_counter[get_rank_int($song->{"score"}, $song->{"notes"})]++;
+        	if(!isset($song->clear)) $song->clear = 0;
+        	if(!isset($song->score)) $song->score = 0;
+        	if(!isset($song->notes)) $song->notes = 0;
+            $clear_counter[(int)$song->clear]++;
+            $rank_counter[get_rank_int($song->score, $song->notes)]++;
             $rank_int = 0;
-            $rank = get_rank($song->{"score"}, $song->{"notes"}, $rank_int);
-            $clear = get_clear($song->{"clear"});
-            $percent = get_percentage($song->{"score"}, $song->{"notes"});
+            $rank = get_rank($song->score, $song->notes, $rank_int);
+            $clear = get_clear($song->clear);
+            $percent = get_percentage($song->score, $song->notes);
             $song_string = 
                 '<tr class="song-tr">
                 <td class="td-lamp td-lamp-'.$clear.'"> </td>
                 <td class="level-td">'.$song->{"level"}.'</td>
                 <td class="td-title td-title-'.$clear.'"><a target="_blank" href="http://www.dream-pro.info/~lavalse/LR2IR/search.cgi?mode=ranking&bmsmd5='.$song->{"md5"}.'">'.$song->{"title"}.'</td>
-                <td>'.$song->{"score"}.'</td>
+                <td>'.$song->score.'</td>
                 <td class="td-clear '.$clear.'"><span class="not-show">'.$clear.'</span></td>
                 <td class="td-rank td-'.$rank.'"><span class="not-show">'.$rank_int.'</span></td>';
-            if($song->{"score"} == 0) {
+            if($song->score == 0) {
                 $song_string.=
                 '<td class="td-bp">　</td>
                 <td class="graph">　</td>
