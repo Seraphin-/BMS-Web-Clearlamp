@@ -208,9 +208,17 @@ button[title]{
 #twitbuttondiv{
 	float: right;
 }
+td.EXHARD{
+	background: #FFA020;
+	color:white;
+}
+td.ASSISTEASY{
+	background: #FF00FF;
+	color:white;
+}
 td.FC{
 	background: #FFC000;
-	color: white;
+	color:white;
 }
 td.HARD{
 	background: #D9534F;

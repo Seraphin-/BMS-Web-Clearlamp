@@ -206,7 +206,7 @@ if((empty($lr2ID)===FALSE || empty($beatoraja_db)===FALSE) && empty($table_url)=
             $song->{"clear"} = $score->clear;
             $all_level_count[(int)$score->clear]++;
             $song->{"score"} = $score->score;
-            $song->{"notes"} = (int)($score->notes);
+            $song->{"notNes"} = (int)($score->notes);
             $song->{"minbp"} = (int)($score->minbp);
         }
         if(!in_array($song->{"level"}, $levelarr))

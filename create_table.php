@@ -1,8 +1,35 @@
 <?php
-    function make_sum_table ($mode, $all_level_count, $rank_count){
-        return "
-        <table class='count_table'>
-            <thead>
+    function make_sum_table ($is_beatoraja, $all_level_count, $rank_count) {
+        if($is_beatoraja) $count_string = "<thead>
+                <tr class='count_table_head'>
+                    <th>MAX</th>
+                    <th>PERFECT</th>
+                    <th>FC</th>
+                    <th>EX-HARD</th>
+                    <th>HARD</th>
+                    <th>CLEAR</th>
+                    <th>EASY</th>
+                    <th>LA-EASY</th>
+                    <th>A-EASY</th>
+                    <th>FAILED</th>
+                    <th>NotPlayed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class='FC'>".(int)$all_level_count[10]."</td>
+                    <td class='FC'>".(int)$all_level_count[9]."</td>
+                    <td class='FC'>".(int)$all_level_count[5]."</td>
+                    <td class='EXHARD'>".(int)$all_level_count[8]."</td>
+                    <td class='HARD'>".(int)$all_level_count[4]."</td>
+                    <td class='GROOVE'>".(int)$all_level_count[3]."</td>
+                    <td class='EASY'>".(int)$all_level_count[2]."</td>
+                    <td class='ASSISTEASY'>".(int)$all_level_count[7]."</td>
+                    <td class='ASSISTEASY'>".(int)$all_level_count[6]."</td>
+                    <td class='FAIL'>".(int)$all_level_count[1]."</td>
+                    <td class='NOPLAY'>".(int)$all_level_count[0]."</td>
+            </tbody>";
+            else $count_string = "<thead>
                 <tr class='count_table_head'>
                     <th>FC</th>
                     <th>HARD</th>
@@ -20,7 +47,10 @@
                     <td class='EASY'>".(int)$all_level_count[2]."</td>
                     <td class='FAIL'>".(int)$all_level_count[1]."</td>
                     <td class='NOPLAY'>".(int)$all_level_count[0]."</td>
-            </tbody>
+            </tbody>";
+        return "
+        <table class='count_table'>
+            ".$count_string."
         </table>
         
         <table class='count_table'>
@@ -100,7 +130,7 @@
             return 'E';
         }
         $rank_int = 1;
-        return F;
+        return 'F';
     }
     function get_clear($clear_int)
     {
@@ -124,7 +154,6 @@
             case 7:
             case 6:
                 return "ASSIST-EASY";
-            case 5:
             default:
                 return "?";
         }
@@ -156,7 +185,6 @@
         foreach($songdata as $song)
         {
             $clear_counter[(int)$song->{"clear"}]++;
-            $song_string='';
             $rank_counter[get_rank_int($song->{"score"}, $song->{"notes"})]++;
             $rank_int = 0;
             $rank = get_rank($song->{"score"}, $song->{"notes"}, $rank_int);

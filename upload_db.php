@@ -54,6 +54,7 @@ if(isset($_FILES['upfile'])) {
 <html>
 <body>
 <p>You can upload your beatoraja score.db here. It is located in the player folder. The maximum size is currently 10 MB.</p>
+<p><b>Databases may be deleted at any time.</b></p>
 <form enctype="multipart/form-data" action="/upload_db.php" method="POST">
     <input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
     score.db: <input name="upfile" type="file" />

@@ -10,7 +10,7 @@
 		<meta name="twitter:card" content="summary" />
 		<meta name="twitter:site" content="@xxyzzzzz" />
 		<meta name="twitter:title" content="BMS ClearLamp" />
-		<meta name="twitter:description" content="<?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($playername)) echo " (".$playername.")";?>" />
+		<meta name="twitter:description" content="<?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($player_name)) echo " (".$player_name.")";?>" />
 		
 		<script type="text/javascript" src="js/canvasjs.min.js"></script>
 		<script type="text/javascript" src="js/classie.js"></script>
@@ -21,7 +21,7 @@
 		
 		<link href="style.css" rel="stylesheet" type="text/css">
 		
-		<title><?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($playername)) echo " (".$playername.")";?></title>
+		<title><?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($player_name)) echo " (".$player_name.")";?></title>
 		
 		<style>
 			.lamp_header {
@@ -58,7 +58,7 @@
 						echo $playerstring;
 					if($loaded_table) {
 						echo '<div id="imageexport">
-								<a class="shrinkbutton" id="download" href="#" download="'.$tablename." ".strtoupper($mode)." LAMP (Player:".$playername.').png">Save as PNG</a>
+								<a class="shrinkbutton" id="download" href="#" download="'.$tablename." ".strtoupper($mode)." LAMP (Player:".$player_name.').png">Save as PNG</a>
 							</div>';
 					}
 				?>
@@ -172,10 +172,10 @@
 					<?php
 					//make table
 					if(count($songdata) > 0) {
-						$clear_counter = array(0,0,0,0,0);
+                        $clear_counter = array(0,0,0,0,0,0,0,0,0,0,0);
 						$rank_counter = array(0,0,0,0,0,0);
 						$table_string =  make_table($songdata, $clear_counter, $rank_counter);
-						echo make_sum_table($mode, $clear_counter, $rank_counter);
+						echo make_sum_table(empty($beatoraja_db)===FALSE, $clear_counter, $rank_counter);
 						echo $table_string;
 					}
 					?>
@@ -211,7 +211,6 @@
 				
     			var chart = new CanvasJS.Chart("chartContainer", <?php echo $datafullstring;?>);
     			chart.render();
-    			imagefiledownload();
     			resizeh1();
 				
 				//tablesorter setting
@@ -263,6 +262,8 @@
 				$('#sidebar').stickyBar({
 					top: 50
 				});
+
+                window.setTimeout(imagefiledownload, 2000);
     		}
 			
 			//filter tds
@@ -333,7 +334,7 @@
     		
     		document.getElementById('download').addEventListener('onchange', function() {
 			    imagefiledownload();
-			}, false);
+			}, false)
 			
 			//level range show
 			function range_show() {
@@ -347,9 +348,7 @@
 			}
 			
     		function imagefiledownload() {
-    			var canvas = document.getElementsByClassName("canvasjs-chart-canvas");
-    			var img = canvas[0].toDataURL("image/png").replace("image/png", "image/octet-stream");
-    			document.getElementById('download').setAttribute("href", img)
+    			document.getElementById('download').setAttribute("href", $('.canvasjs-chart-canvas')[0].toDataURL());
     		}
     		
     		function resizeh1() {
@@ -398,7 +397,6 @@
 				}
 			
 				init();
-			
 			})();
 		</script>
 	</body>
