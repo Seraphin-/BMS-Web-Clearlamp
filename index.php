@@ -8,7 +8,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:site" content="@xxyzzzzz" />
+		<meta name="twitter:site" content="clearlamp.seraphin.xyz" />
 		<meta name="twitter:title" content="BMS ClearLamp" />
 		<meta name="twitter:description" content="<?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($player_name)) echo " (".$player_name.")";?>" />
 		
@@ -44,6 +44,9 @@
 				background: white;
 				color: #ff5c5c;
 			}
+            optgroup {
+                background-color: #ffb7b7;
+            }
 		</style>
 	</head>
 	
@@ -51,7 +54,7 @@
 		<header id="lamp_header" class="lamp_header">
 			<div class="ha-header-front">
 				
-				<h1 id='tablename'><span><?=$tablename?> ClearLamp</span></h1>
+                <h1 id='tablename'><span><?=$tablename?> ClearLamp </span></h1>
 				
 				<?php
 					if(!empty($playerstring))
@@ -69,11 +72,11 @@
 						<label for="lr2ID">
 							LR2ID:
 						</label>
-						<input type="text" name="lr2ID" id="lr2ID" pattern="[0-9]{0,6}" value="<?php echo $lr2ID; ?>">
+						<input type="text" name="lr2ID" id="lr2ID" pattern="[0-9]{0,6}" value="<?= (empty($lr2ID)===FALSE) ? $lr2ID : $_COOKIE['lr2ID']; ?>">
                         <label for="beatoraja_db">
                             Beatoraja DB Hash:
                         </label>
-                        <input type="text" name="beatoraja_db" id="beatoraja_db" pattern="[a-f0-9]+" value="<?php echo $beatoraja_db; ?>">
+                        <input type="text" name="beatoraja_db" id="beatoraja_db" pattern="[a-f0-9]+" value="<?= (empty($beatoraja_db)===FALSE) ? $beatoraja_db : $_COOKIE['beatoraja_db']; ?>">
                         <a href="upload_db.php">(Upload DB)</a>
 						<div id="modeselect" class="">
 							<input type="radio" id="clear" name="mode" value="clear" checked <?php if(strcmp($mode, "clear") === 0) echo "checked"; ?>><label for="clear" class="toggle-btn">Clear</label>
@@ -84,11 +87,22 @@
 						<label for="urlselect">	URL:</label>
 						<select id="table_url" name="table_url" class="urlselect" onchange="this.form.submit()">
                             <?php
-                            $tables = ['' => 'Select Table', 'kuse1' => '癖譜面コレクション(仮)', 'kuse2' => '癖譜面コレクション(サブ)', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ', 'stellalite' => 'Stellalite', 'stellalitesub' => 'Stellalite Sub', 'stella' => 'Stella', 'satellite' => 'Satellite'];
+                            $tables = ['Select Table',
+                                'Common Tables', 'normal1' => '☆ 通常難易度表', 'insane1' => '★ 発狂BMS難易度表', 'overjoy' => '★★ Overjoy', 'stellalite' => 'stl Stellalite', 'stellalitesub' => 'stl Stellalite Sub', 'satellite' => 'sl Satellite', 'stella' => 'st Stella',
+                                'Specialized Tables', 'kuse1' => '!? 癖譜面コレクション(仮)', 'kuse2' => '¿¡ 癖譜面コレクション(サブ)', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ', 'sara' => '◎ 通常皿難易度表', 'ln1' => '◆ LN難易度'];
+                            $first = true;
                             foreach($tables as $val => $name) {
-                                ?>
-                                <option value="<?= $val ?>" <?= ($table_url == $val) ? 'selected="yes"' : '' ?>><?= $name ?></option>
-                                <?php
+                                if (is_int($val)) {
+                                    if(!$first) echo '</optgroup>';
+                                    else $first = false;
+                                    ?>
+                                    <optgroup label="<?= $name ?>">
+                                    <?php
+                                } else {
+                                    ?>
+                                    <option value="<?= $val ?>" <?= ($table_url == $val) ? 'selected="yes"' : '' ?>><?= $name ?></option>
+                                    <?php
+                                }
                             }
                             ?>
 						</select>
@@ -406,6 +420,6 @@
 		</script>
 	</body>
     <footer>
-        Generated in <?= get_time() - $start ?> seconds.
+        Generated in <?= get_time() - $start ?> seconds. <a href="https://github.com/Seraphin-/BMS-Web-Clearlamp">Source Code</a>
     </footer>
 </html>

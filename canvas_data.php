@@ -167,6 +167,8 @@ $tablename = "(No table loaded)";
 $lr2ID = isset($_GET["lr2ID"]) ? $_GET["lr2ID"] : "";
 $mode = isset($_GET["mode"]) ? $_GET["mode"] : "";
 $beatoraja_db  = preg_replace( "/[^a-f0-9_]/", "", isset($_GET["beatoraja_db"]) ? $_GET["beatoraja_db"] : "");;
+if(empty($beatoraja_db)===FALSE) setcookie("beatoraja_db", $beatoraja_db, 0, "/", $_SERVER['SERVER_NAME'], true, true);
+if(empty($lr2ID)===FALSE) setcookie("lr2ID", $lr2ID, 0, "/", $_SERVER['SERVER_NAME'], true, true);
 $playerstring = "";
 if(empty($_GET["mode"]))
 {
