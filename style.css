@@ -379,6 +379,18 @@ td.HARD-CLEAR {
 td.FULL-COMBO {
 	background-image: url("image/FULL-COMBO.gif");
 }
+td.EX-HARD {
+	text-shadow: 0 0 5px #FFA020;
+}
+td.EX-HARD:after {
+	content: "EX-HARD CLEAR";
+}
+td.ASSIST-EASY {
+	text-shadow: 0 0 5px #FF00FF;
+}
+td.ASSIST-EASY:after {
+	content: "ASSIST EASY CLEAR";
+}
 
 .score-table-header-tr th {
 	background: #303030;
@@ -528,8 +540,13 @@ td.td-F{
 }
 
 .td-lamp-HARD-CLEAR {
-	animation: hard 1s infinite;
-	
+	background-color: red;
+}
+.td-lamp-ASSIST-EASY {
+	background-color: #ff00ff;
+}
+.td-lamp-EX-HARD {
+	animation: ex-hard 0.1s infinite;
 }
 .td-lamp-FULL-COMBO {
 	animation: fullcombo 0.1s infinite;
@@ -546,12 +563,12 @@ td.td-F{
 .td-lamp-NOT-PLAYED {
 	background-color:#262626;
 }
-@keyframes hard {
+@keyframes ex-hard {
 	from {
-		background-color: white;
+		background-color: yellow;
 	}
 	to {
-		background-color: #EEE;
+		background-color: red;
 	}
 }
 

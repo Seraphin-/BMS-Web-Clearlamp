@@ -25,24 +25,24 @@
 		
 		<style>
 			.lamp_header {
-				background-color: #ff1c1c;
+				background-color: #ff5c5c;
 			}
 			.ha-header-front form select option{
-				background-color: #ff1c1c;
+				background-color: #ff5c5c;
 			}
 			#formbutton:hover{
-				color: #ff1c1c;
+				color: #ff5c5c;
 			}
 			#imageexport a:hover{
-				color: #ff1c1c;
+				color: #ff5c5c;
 			}
 			#modeselect input[type="radio"]:checked + label {
 				background: white;
-				color: #ff1c1c;
+				color: #ff5c5c;
 			}
 			#modeselect label:hover {
 				background: white;
-				color: #ff1c1c;
+				color: #ff5c5c;
 			}
 		</style>
 	</head>
@@ -84,7 +84,7 @@
 						<label for="urlselect">	URL:</label>
 						<select id="table_url" name="table_url" class="urlselect" onchange="this.form.submit()">
                             <?php
-                            $tables = ['' => 'Select Table', 'kuse1' => '癖譜面コレクション(仮)', 'kuse2' => '癖譜面コレクション(サブ)', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ', 'Stella' => 'stella', 'Satellite' => 'satellite'];
+                            $tables = ['' => 'Select Table', 'kuse1' => '癖譜面コレクション(仮)', 'kuse2' => '癖譜面コレクション(サブ)', 'fox_table' => 'Σ：3 」 ∠ )ﾐ⌒ゞ', 'stellalite' => 'Stellalite', 'stellalitesub' => 'Stellalite Sub', 'stella' => 'Stella', 'satellite' => 'Satellite'];
                             foreach($tables as $val => $name) {
                                 ?>
                                 <option value="<?= $val ?>" <?= ($table_url == $val) ? 'selected="yes"' : '' ?>><?= $name ?></option>
@@ -149,6 +149,11 @@
 							<div class="ck-button"><label>
 								<input class="clear-checkbox" type="checkbox" name="FC" value="FULL-COMBO" checked/><span>FC</span>
 							</label></div>
+                            <? if (empty($beatoraja_db)===FALSE): ?>
+                                <div class="ck-button"><label>
+                                        <input class="clear-checkbox" type="checkbox" name="EX-HARD" value="EX-HARD" checked/><span>EX-HARD</span>
+                                    </label></div>
+                            <? endif; ?>
 							<div class="ck-button"><label>
 								<input class="clear-checkbox" type="checkbox" name="HARD" value="HARD-CLEAR" checked/><span>HARD</span>
 							</label></div>
