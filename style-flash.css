@@ -1,0 +1,30 @@
+td.td-title-EX-HARD {
+    animation: ex-hard 0.1s infinite;
+}
+td.td-title-FULL-COMBO {
+    animation: fullcombo 0.1s infinite;
+}
+.td-lamp-EX-HARD {
+    animation: ex-hard 0.1s infinite;
+}
+.td-lamp-FULL-COMBO {
+    animation: fullcombo 0.1s infinite;
+}
+@keyframes ex-hard {
+    from {
+        background-color: yellow;
+    }
+    to {
+        background-color: red;
+    }
+}@keyframes fullcombo {
+     from {
+         background-color: hotpink;
+     }
+     30% {
+         background-color: white;
+     }
+     60% {
+         background-color: aqua;
+     }
+ }

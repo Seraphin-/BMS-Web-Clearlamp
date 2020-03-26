@@ -87,9 +87,11 @@ function get_currentclear($mode, $i, &$indexlabelcolor)
 		switch ($i) {
             case 10:
                 $currentclear = "MAX";
+                $indexlabelcolor = "#171717";
                 break;
             case 9:
                 $currentclear = "PERFECT";
+                $indexlabelcolor = "#171717";
                 break;
             case 8:
                 $currentclear = "EX-HARD";
@@ -173,6 +175,10 @@ $playerstring = "";
 if(empty($_GET["mode"]))
 {
 	$mode = 'clear';
+}
+if(empty($_GET['flash'])===FALSE) {
+    setcookie("flash", $_GET['flash']==='false', 0, "/", $_SERVER['SERVER_NAME'], true, true);
+    $_COOKIE['flash'] = $_GET['flash']==='false';
 }
 
 $loaded_table = false;

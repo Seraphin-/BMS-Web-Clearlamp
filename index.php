@@ -20,7 +20,8 @@
 		<script type="text/javascript" src="js/jquery.stickybar.min.js"></script>
 		
 		<link href="style.css" rel="stylesheet" type="text/css">
-		
+        <link href="style-<?= (isset($_COOKIE['flash']) && $_COOKIE['flash'] == 1) ? "no-" : "" ?>flash.css" rel="stylesheet" type="text/css">
+
 		<title><?php echo $tablename." ".strtoupper($mode)." LAMP"; if(!empty($player_name)) echo " (".$player_name.")";?></title>
 		
 		<style>
@@ -84,7 +85,7 @@
 						</div>
 					</div>
 					<div class="leftdiv">
-						<label for="urlselect">	URL:</label>
+						<label for="urlselect">	TABLE:</label>
 						<select id="table_url" name="table_url" class="urlselect" onchange="this.form.submit()">
                             <?php
                             $tables = ['Select Table',
@@ -106,7 +107,7 @@
                             }
                             ?>
 						</select>
-
+                        <button id="toggleflash">Toggle Flashing Lamps</button>
 					</div>
 				</form>
 			</div>
@@ -222,7 +223,7 @@
 
 				<?php
 					if($mode === "clear")
-                        if(empty($beatoraja_db)===FALSE) echo 'CanvasJS.addColorSet("pastel", ["#FFC000", "#FFC000", "#FFC000", "#FFA020", "#D9534F", "#FF8C00", "#40C000", "#FF00AA", "#FF00FF", "#606060", "#F0F0F0",]);';
+                        if(empty($beatoraja_db)===FALSE) echo 'CanvasJS.addColorSet("pastel", ["#80FFFF", "#80FFFF", "#80FFFF", "#FFBF20", "#D9534F", "#17A2B8", "#40C000", "#FF80AA", "#FF80FF", "#606060", "#F0F0F0",]);';
 						else echo 'CanvasJS.addColorSet("pastel", ["#FFC000", "#D9534F", "#FF8C00", "#40C000", "#606060", "#F0F0F0",]);';
 					else
 						echo 'CanvasJS.addColorSet("pastel", ["#CC0000", "#ffd040", "#BFC1C2", "#CD7F32", "#B0E57C", "#ACD1E9", "#F0F0F0"]);';
@@ -281,6 +282,13 @@
 				$('#sidebar').stickyBar({
 					top: 50
 				});
+
+				$('#toggleflash').on('click', function(ev) {
+				    ev.preventDefault();
+				    let searchParams = new URLSearchParams(new URL(window.location).search);
+				    searchParams.set('flash', <?= (isset($_COOKIE['flash']) && $_COOKIE['flash'] == 1) ? "true" : "false" ?>);
+				    window.location.search = "?" + searchParams.toString();
+                });
 
                 window.setTimeout(imagefiledownload, 2000);
     		}

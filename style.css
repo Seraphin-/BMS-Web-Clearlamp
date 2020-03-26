@@ -133,8 +133,25 @@ span.not-show {
     transition: background-color 300ms;
     margin-right: 20px;
 }
-
 #formbutton:hover{
+	background: white;
+}
+#toggleflash {
+	display: inline;
+	width: 200px;
+	height:28px;
+	background: transparent;
+	border: 1px solid white;
+	color: white;
+	font-size: 16px;
+	margin-top: 2px;
+	-webkit-transition: background-color 300ms;
+    -moz-transition: background-color 300ms;
+    -o-transition: background-color 300ms;
+    transition: background-color 300ms;
+}
+
+#toggleflash:hover{
 	background: white;
 }
 .canvasjs-chart-tooltip div {
@@ -209,24 +226,24 @@ button[title]{
 	float: right;
 }
 td.EXHARD{
-	background: #FFA020;
-	color:white;
+	background: #FFBF20;
+	color: white;
 }
 td.ASSISTEASY{
-	background: #FF00FF;
+	background: #FF80FF;
 	color:white;
 }
 td.FC{
-	background: #FFC000;
-	color:white;
+	background: #80FFFF;
+	color:black;
 }
 td.HARD{
 	background: #D9534F;
 	color:white;
 }
 td.GROOVE{
-	background: #FF8C00;
-	color:white;
+	background: #17A2B8;
+	color: white;
 }
 td.EASY{
 	background: #40C000;
@@ -330,7 +347,7 @@ td.CF{
 
 
 #ScoreTable {
-	border-collapse: seperate;
+	border-collapse: separate;
 	border-spacing: 0 1px;
 	width: 100%;
 	text-align: center;
@@ -380,13 +397,13 @@ td.FULL-COMBO {
 	background-image: url("image/FULL-COMBO.gif");
 }
 td.EX-HARD {
-	text-shadow: 0 0 5px #FFA020;
+	text-shadow: 0 0 5px #FFBF20;
 }
 td.EX-HARD:after {
 	content: "EX-HARD CLEAR";
 }
 td.ASSIST-EASY {
-	text-shadow: 0 0 5px #FF00FF;
+	text-shadow: 0 0 5px #FF80FF;
 }
 td.ASSIST-EASY:after {
 	content: "ASSIST EASY CLEAR";
@@ -402,16 +419,7 @@ td.td-title a{
 }
 
 td.td-title-ASSIST-EASY {
-	background: #ff00ff;
-}
-
-/*td.td-title-EX-HARD {
-	background: -moz-linear-gradient(top, #dceabb 0%, #dccd4d 50%, #d8b500 51%, #dbdf93 100%);
-	background: -webkit-linear-gradient(top, #dceabb 0%,#dccd4d 50%,#d8b500 51%,#dbdf93 100%);
-	background: linear-gradient(to bottom, #dceabb 0%,#dccd4d 50%,#d8b500 51%,#dbdf93 100%);
-}*/
-td.td-title-EX-HARD {
-	animation: ex-hard 0.1s infinite;
+	background: #FF80FF;
 }
 
 td.td-title-FAILED {
@@ -443,9 +451,6 @@ td.td-title-HARD-CLEAR {
 	background: -webkit-linear-gradient(top, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%);
 	background: linear-gradient(to bottom, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%);
 }*/
-td.td-title-FULL-COMBO {
-	animation: fullcombo 0.1s infinite;
-}
 
 td.td-title-FULL-COMBO a {
 	color: black;
@@ -546,74 +551,22 @@ td.td-F{
 }
 
 .td-lamp-HARD-CLEAR {
-	background-color: red;
+	background-color: white;
 }
 .td-lamp-ASSIST-EASY {
 	background-color: #ff00ff;
 }
-.td-lamp-EX-HARD {
-	animation: ex-hard 0.1s infinite;
-}
-.td-lamp-FULL-COMBO {
-	animation: fullcombo 0.1s infinite;
-}
 .td-lamp-FAILED {
-	animation: failed 0.1s ease-in-out infinite alternate;
+	background-color: black;
 }
 .td-lamp-EASY-CLEAR {
-	animation: easy 0.1s ease-in-out infinite alternate;
+	background-color: #40C000;
 }
 .td-lamp-CLEAR {
-	animation: clear 0.1s ease-in-out infinite alternate;
+	background-color: #17A2B8;
 }
 .td-lamp-NOT-PLAYED {
 	background-color:#262626;
-}
-@keyframes ex-hard {
-	from {
-		background-color: yellow;
-	}
-	to {
-		background-color: red;
-	}
-}
-
-@keyframes clear {
-	from {
-		background-color: #ffad33;
-	}
-	to {
-		background-color: #cc7a00;
-	}
-}
-@keyframes easy {
-	from {
-		background-color: #00cc00;
-	}
-	to {
-		background-color: #008000;
-	}
-}
-
-@keyframes failed {
-	from {
-		background-color: #ea2626;
-	}
-	to {
-		background-color: #8b0e0e;
-	}
-}
-
-@keyframes fullcombo {
-	from {
-		background-color: hotpink;
-	}
-	30% {
-		background-color: white;
-	}
-	60% {
-		background-color: aqua;
-	}
 }
 
 #sidebar {
